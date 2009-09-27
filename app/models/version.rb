@@ -24,6 +24,10 @@ class Version < ActiveRecord::Base
 
   before_save :update_prerelease
   after_save  :reorder_versions
+  
+  serialize_with_options do
+    only :version, :authors, :info, :built_at
+  end
 
   def validate
     if new_record? && Version.exists?(:rubygem_id => rubygem_id, :number => number, :platform => platform)
@@ -56,6 +60,10 @@ class Version < ActiveRecord::Base
 
   def to_title
     "#{rubygem.name} (#{to_s})"
+  end
+  
+  def to_yaml
+    public_api_info.to_yaml
   end
 
   def to_slug
@@ -114,4 +122,16 @@ class Version < ActiveRecord::Base
     command << " --pre" if prerelease
     command
   end
+  
+  private
+  
+    def public_api_info
+      {
+        :version  => number,
+        :authors  => authors,
+        :info     => info,
+        :built_at => built_at
+      }
+    end
+  
 end

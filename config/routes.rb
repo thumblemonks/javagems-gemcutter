@@ -7,6 +7,31 @@ ActionController::Routing::Routes.draw do |map|
     :action       => "show",
     :format       => "json",
     :requirements => { :id => RUBYGEM_NAME_MATCHER }
+  map.json_gem_version "/gems/:rubygem_id/versions/:id.json",
+    :controller   => "versions",
+    :action       => "show",
+    :format       => "json",
+    :requirements => { :id => RUBYGEM_NAME_MATCHER }
+  map.xml_gem "/gems/:id.xml",
+    :controller   => "rubygems",
+    :action       => "show",
+    :format       => "xml",
+    :requirements => { :id => RUBYGEM_NAME_MATCHER }   
+  map.xml_gem_version "/gems/:rubygem_id/versions/:id.xml",
+    :controller   => "versions",
+    :action       => "show",
+    :format       => "xml",
+    :requirements => { :id => RUBYGEM_NAME_MATCHER }
+  map.yaml_gem "/gems/:id.yaml",
+    :controller   => "rubygems",
+    :action       => "show",
+    :format       => "yaml",
+    :requirements => { :id => RUBYGEM_NAME_MATCHER }   
+  map.yaml_gem_version "/gems/:rubygem_id/versions/:id.yaml",
+    :controller   => "versions",
+    :action       => "show",
+    :format       => "yaml",
+    :requirements => { :id => RUBYGEM_NAME_MATCHER }
 
   map.resource  :dashboard,  :only => :show
   map.resource  :profile
@@ -20,7 +45,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :rubygems,
                 :as           => "gems",
-                :requirements => { :id => RUBYGEM_NAME_MATCHER } do |rubygems|
+                :requirements => { :id => RUBYGEM_NAME_MATCHER },
+                :member       => [:version] do |rubygems|
 
     rubygems.resource :owners, :only => [:show, :create, :destroy]
 

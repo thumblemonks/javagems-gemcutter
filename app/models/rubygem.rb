@@ -24,6 +24,11 @@ class Rubygem < ActiveRecord::Base
     :include    => [:versions],
     :order      => "name asc" }
   }
+  
+  serialize_with_options do 
+    only :name, :downloads, :rubyforge_project
+    methods :version, :authors, :info
+  end
 
   def validate
     if name =~ /^[\d]+$/
@@ -65,6 +70,7 @@ class Rubygem < ActiveRecord::Base
     versions.latest.try(:to_title) || name
   end
 
+<<<<<<< HEAD
   def to_json
     {:name              => name,
      :downloads         => downloads,
@@ -74,8 +80,14 @@ class Rubygem < ActiveRecord::Base
      :rubyforge_project => rubyforge_project}.to_json
   end
 
+=======
+>>>>>>> All of the API qrush wanted except for yaml on the long lists, still working on that...
   def to_param
     name
+  end
+  
+  def to_yaml
+    public_api_info.to_yaml
   end
 
   def with_downloads
@@ -114,6 +126,18 @@ class Rubygem < ActiveRecord::Base
     update_versions!     version, spec
     update_dependencies! version, spec
     update_linkset!      spec
+  end
+  
+  def version
+    versions.current.number
+  end
+  
+  def authors
+    versions.current.authors
+  end
+  
+  def info
+    versions.current.info
   end
 
   def reorder_versions

@@ -3,10 +3,11 @@ class RubygemsController < ApplicationController
   before_filter :authenticate_with_api_key, :only => :create
   before_filter :verify_authenticated_user, :only => :create
   before_filter :redirect_to_root, :only => [:edit, :update], :unless => :signed_in?
-  before_filter :find_gem, :only => [:edit, :update, :show]
+  before_filter :find_gem, :only => [:edit, :update, :show, :version]
   before_filter :load_gem, :only => [:edit, :update]
 
   def index
+    params[:offset] ||= 0
     respond_to do |format|
       format.html do
         params[:letter] = 'A' unless params[:letter]
@@ -17,6 +18,9 @@ class RubygemsController < ApplicationController
         @versions = Version.published(20)
         render 'versions/feed'
       end
+      format.xml  { render :xml  => Rubygem.by_name(:asc).with_versions.all(:limit => 30, :offset => params[:offset]) }
+      format.json { render :json => Rubygem.by_name(:asc).with_versions.all(:limit => 30, :offset => params[:offset]) }
+      # format.yaml { render :text => Rubygem.by_name(:asc).with_versions.all(:limit => 30, :offset => params[:offset]).to_yaml, :content_type => 'text/yaml' }
     end
   end
 
@@ -25,12 +29,14 @@ class RubygemsController < ApplicationController
       format.html do
         @latest_version = @rubygem.versions.latest
       end
-      format.json do
-        if @rubygem.try(:hosted?)
-          render :json => @rubygem.to_json
-        else
-          render :json => "Not hosted here.", :status => :not_found
-        end
+      if @rubygem.try(:hosted?)
+        format.json { render :json => @rubygem }
+        format.xml  { render :xml  => @rubygem  }
+        format.yaml { render :text => @rubygem.to_yaml, :content_type => 'text/yaml' }
+      else
+        format.json { render :json => "Not hosted here.", :status => :not_found }
+        format.xml  { render :xml  => "Not hosted here.", :status => :not_found }
+        format.yaml { render :text => "Not hosted here.", :status => :not_found, :content_type => 'text/yaml' }
       end
     end
   end
@@ -51,6 +57,10 @@ class RubygemsController < ApplicationController
     gemcutter = Gemcutter.new(current_user, request.body)
     gemcutter.process
     render :text => gemcutter.message, :status => gemcutter.code
+  end
+  
+  def version
+    render :text => @rubygem.versions.current.number
   end
 
   protected
