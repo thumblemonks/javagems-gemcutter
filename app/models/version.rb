@@ -1,5 +1,4 @@
 class Version < ActiveRecord::Base
-  include Pacecar
 
   belongs_to :rubygem, :counter_cache => true
   has_many :dependencies, :dependent => :destroy
@@ -30,7 +29,7 @@ class Version < ActiveRecord::Base
   end
 
   def self.published(limit=5)
-    created_at_before(DateTime.now.utc).by_created_at(:desc).limited(limit)
+    created_at_before(DateTime.now.utc).descend_by_created_at.limited(limit)
   end
 
   def to_s

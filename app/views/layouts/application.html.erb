@@ -29,9 +29,9 @@
             <li><%= link_to "sign up", sign_up_path %></li>
           <% end %>
         </ul>
-        <% form_tag search_url, :method => :get do %>
+        <% form_for @search, :url => search_url do |form| %>
           <div class="text_field">
-            <%= text_field_tag :query, params[:query] ? h(params[:query]) : "Search gems&hellip;" %>
+            <%= form.text_field :search %>
           </div>
           <%= submit_tag 'Search', :id => 'search_submit' %>
         <% end %>

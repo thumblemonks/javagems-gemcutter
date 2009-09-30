@@ -1,5 +1,4 @@
 class Rubygem < ActiveRecord::Base
-  include Pacecar
 
   has_many :owners, :through => :ownerships, :source => :user
   has_many :ownerships
@@ -33,11 +32,11 @@ class Rubygem < ActiveRecord::Base
   end
 
   def self.latest(limit=5)
-    with_versions.by_created_at(:desc).limited(limit)
+    with_versions.descend_by_created_at.limited(limit)
   end
 
   def self.downloaded(limit=5)
-    with_versions.by_downloads(:desc).limited(limit)
+    with_versions.descend_by_downloads.limited(limit)
   end
 
   def hosted?

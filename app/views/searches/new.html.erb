@@ -1,8 +1,13 @@
 <% @title = "search" %>
 <% if @gems %>
-  <% @subtitle = "for #{h(params[:query])}" %>
+  <% @subtitle = "for #{h(@search.search)}" %>
   <p class="entries">
     <%= page_entries_info @gems, :entry_name => 'gem' %>
+  </p>
+
+  <p class="entries">
+    <%=  order @search, :by => :name %>
+    <%=  order @search, :by => :downloads %>
   </p>
   <% if @gems.present? %>
     <div class="gems border">

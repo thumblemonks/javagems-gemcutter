@@ -18,7 +18,7 @@ class SearchesControllerTest < ActionController::TestCase
       @brando  = Factory(:rubygem, :name => "brando")
       Factory(:version, :rubygem => @sinatra)
       Factory(:version, :rubygem => @brando)
-      get :new, :query => "sinatra"
+      get :new, :search => { :search => "sinatra" }
     end
     
     should_respond_with :success

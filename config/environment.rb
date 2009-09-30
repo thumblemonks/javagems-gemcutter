@@ -11,10 +11,6 @@ Rails::Initializer.run do |config|
     :lib     => 'clearance',
     :source  => 'http://gems.github.com',
     :version => '0.8.2'
-  config.gem "ddollar-pacecar",
-    :lib     => 'pacecar',
-    :source  => 'http://gems.github.com',
-    :version => '1.1.6'
   config.gem 'mislav-will_paginate',
     :version => '~> 2.3.11',
     :lib     => 'will_paginate',
@@ -32,6 +28,7 @@ Rails::Initializer.run do |config|
   config.gem "rtomayko-rack-cache",
     :lib     => "rack/cache",
     :version => "0.5.1"
+  config.gem "searchlogic"
 
   config.action_mailer.delivery_method = :smtp
 end
