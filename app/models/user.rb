@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  include Clearance::User
+  include Clearance::User, Sparkline
 
   has_many :rubygems, :through    => :ownerships,
                       :order      => "name ASC",

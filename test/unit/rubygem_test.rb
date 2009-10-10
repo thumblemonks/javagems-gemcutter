@@ -169,12 +169,30 @@ class RubygemTest < ActiveSupport::TestCase
 
   context "with some rubygems" do
     setup do
-      @rubygem_without_version = Factory(:rubygem)
-      @rubygem_with_version = Factory(:rubygem)
-      @rubygem_with_versions = Factory(:rubygem)
+      @rubygem_without_version = Factory(:rubygem, :created_at => 1.day.ago)
+      @rubygem_with_version = Factory(:rubygem, :created_at => 2.days.ago)
+      @rubygem_with_versions = Factory(:rubygem, :created_at => 30.days.ago)
+      Factory(:rubygem, :created_at => 1.day.ago)
 
       Factory(:version, :rubygem => @rubygem_with_version)
       3.times { Factory(:version, :rubygem => @rubygem_with_versions) }
+    end
+
+    should "return counts grouped by created_at from past 30 days" do
+      counts = Rubygem.counts_grouped_by_created_at_from_past(30.days)
+
+      assert_equal 2, counts.first.count.to_i
+      assert counts.all? { |record| record.count && record.created_at }
+
+      [1, 2, 30].each do |number|
+        assert counts.find { |record|
+          record.created_at.to_date == number.days.ago.to_date
+        }
+      end
+    end
+
+    should "return sparkline data from past 5 days" do
+      assert_equal [0, 0, 1, 2, 0], Rubygem.sparkline_data_from_past(5.days)
     end
 
     should "return only gems with one version" do

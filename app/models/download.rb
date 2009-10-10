@@ -1,5 +1,5 @@
 class Download < ActiveRecord::Base
-  include Pacecar
+  include Pacecar, Sparkline
   attr_accessor :raw
   belongs_to :version, :counter_cache => true
 

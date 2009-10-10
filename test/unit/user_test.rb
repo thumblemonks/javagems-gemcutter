@@ -62,4 +62,30 @@ class UserTest < ActiveSupport::TestCase
       end
     end
   end
+
+  context "with users" do
+    setup do
+      Factory(:user, :created_at => 1.day.ago)
+      Factory(:user, :created_at => 1.day.ago)
+      Factory(:user, :created_at => 2.days.ago)
+      Factory(:user, :created_at => 30.days.ago)
+    end
+
+    should "return counts grouped by created_at from past 30 days" do
+      counts = User.counts_grouped_by_created_at_from_past(30.days)
+
+      assert_equal 2, counts.first.count.to_i
+      assert counts.all? { |record| record.count && record.created_at }
+
+      [1, 2, 30].each do |number|
+        assert counts.find { |record|
+          record.created_at.to_date == number.days.ago.to_date
+        }
+      end
+    end
+
+    should "return sparkline data from past 5 days" do
+      assert_equal [0, 0, 1, 2, 0], User.sparkline_data_from_past(5.days)
+    end
+  end
 end

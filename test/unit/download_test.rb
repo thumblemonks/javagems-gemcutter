@@ -34,4 +34,30 @@ class DownloadTest < ActiveSupport::TestCase
     assert_equal 1, rubygem.reload.downloads
     assert_equal 0, other_platform_version.reload.downloads_count
   end
+
+  context "with downloads" do
+    setup do
+      Factory(:download, :created_at => 1.day.ago)
+      Factory(:download, :created_at => 1.day.ago)
+      Factory(:download, :created_at => 2.days.ago)
+      Factory(:download, :created_at => 30.days.ago)
+    end
+
+    should "return counts grouped by created_at from past 30 days" do
+      counts = Download.counts_grouped_by_created_at_from_past(30.days)
+
+      assert_equal 2, counts.first.count.to_i
+      assert counts.all? { |record| record.count && record.created_at }
+
+      [1, 2, 30].each do |number|
+        assert counts.find { |record|
+          record.created_at.to_date == number.days.ago.to_date
+        }
+      end
+    end
+
+    should "return sparkline data from past 5 days" do
+      assert_equal [0, 0, 1, 2, 0], Download.sparkline_data_from_past(5.days)
+    end
+  end
 end
