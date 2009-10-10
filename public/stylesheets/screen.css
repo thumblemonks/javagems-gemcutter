@@ -298,10 +298,11 @@ body {
 }
 
 .main .info .statistics .border {
+  position: relative;
   color: #5E543E;
   width: 190px;
   margin: 24px 0 0 36px;
-  padding: 8px;
+  padding: 8px 8px 32px 8px;
   font-size: 2em;
   text-align: center;
   float: left;
@@ -310,8 +311,26 @@ body {
   -webkit-border-radius: 8px;
 }
 
+.main .info .statistics .border img {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: #CBC2AE -webkit-gradient(linear, left top, left bottom, from(#666), to(#363636), color-stop(0.75, #666));
+  padding: 6px;
+  -webkit-border-bottom-right-radius: 8px;
+  -webkit-border-bottom-left-radius: 8px;
+}
+
 .main .info .statistics .chart {
   width: 678px;
+  padding-bottom: 8px;
+}
+
+.main .info .statistics .chart img {
+  position: relative;
+  background: transparent;
+  bottom: 0;
+  padding: 0;
 }
 
 .main .info .statistics span {

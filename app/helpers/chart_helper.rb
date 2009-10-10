@@ -29,4 +29,19 @@ module ChartHelper
 
     image_tag chart.to_url
   end
+
+  def statistic_sparkline(data)
+    # GoogleChart will error out if all the values are zero...
+    return if data.all? { |count| count == 0 }
+
+    sparkline = GoogleChart::SparklineChart.new do |sp|
+      sp.width  = 194
+      sp.height = 16
+      sp.fill(:solid, :color => '666666')
+
+      sp.data '', data, 'FFFFFF'
+    end
+
+    image_tag sparkline.to_url
+  end
 end
