@@ -5,7 +5,7 @@ module Sparkline
 
   module ClassMethods
     def counts_grouped_by_created_at_from_past(days)
-      all :select => 'COUNT(id) AS count, created_at',
+      all :select => 'COUNT(id) AS count, DATE(created_at) AS created_at',
           :group  => 'DATE(created_at)',
           :order  => 'created_at DESC',
           :limit  => days / 1.day
@@ -18,7 +18,7 @@ module Sparkline
       (0..(days - 1)).inject([]) do |result, day|
         date   = day.days.ago.to_date
         record = records.find { |record|
-          record.created_at && record.created_at.to_date == date
+          record.created_at && record.created_at == date
         }
 
         result << record.try(:count).to_i
