@@ -70,18 +70,6 @@ class Rubygem < ActiveRecord::Base
     versions.latest.try(:to_title) || name
   end
 
-<<<<<<< HEAD
-  def to_json
-    {:name              => name,
-     :downloads         => downloads,
-     :version           => versions.latest.number,
-     :authors           => versions.latest.authors,
-     :info              => versions.latest.info,
-     :rubyforge_project => rubyforge_project}.to_json
-  end
-
-=======
->>>>>>> All of the API qrush wanted except for yaml on the long lists, still working on that...
   def to_param
     name
   end
@@ -154,6 +142,15 @@ class Rubygem < ActiveRecord::Base
     version = self.versions.find_or_initialize_by_number_and_platform(spec.version.to_s, spec.original_platform.to_s)
     version.rubygem = self
     version
+  end
+  
+  def public_api_info
+    {:name              => name,
+     :downloads         => downloads,
+     :version           => versions.current.number,
+     :authors           => versions.current.authors,
+     :info              => versions.current.info,
+     :rubyforge_project => rubyforge_project }
   end
 
 end

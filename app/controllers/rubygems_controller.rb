@@ -71,9 +71,9 @@ class RubygemsController < ApplicationController
           format.html do
             render :file => 'public/404.html'
           end
-          format.json do
-            render :text => "This rubygem could not be found.", :status => :not_found
-          end
+          format.json { render :text => "This rubygem could not be found.", :status => :not_found }
+          format.xml { render :text => "This rubygem could not be found.", :status => :not_found }
+          format.yaml { render :text => "This rubygem could not be found.", :status => :not_found, :content_type => 'text/yaml' }
         end
       end
     end

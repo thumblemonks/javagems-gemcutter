@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'crack'
 
 class RubygemsControllerTest < ActionController::TestCase
   should_forbid_access_when("pushing a gem") { post :create }
@@ -27,13 +28,42 @@ class RubygemsControllerTest < ActionController::TestCase
       setup do
         @rubygem = Factory(:rubygem)
         Factory(:version, :rubygem => @rubygem)
-        get :show, :id => @rubygem.to_param, :format => "json"
       end
 
-      should_assign_to(:rubygem) { @rubygem }
-      should_respond_with :success
-      should "return a json hash" do
-        assert_not_nil JSON.parse(@response.body)
+      context "in JSON format" do
+        setup do
+          get :show, :id => @rubygem.to_param, :format => "json"
+        end
+        
+        should_assign_to(:rubygem) { @rubygem }
+        should_respond_with :success
+        should "return a json hash" do
+          assert_not_nil JSON.parse(@response.body)
+        end
+      end
+      
+      context "in XML format" do
+        setup do
+          get :show, :id => @rubygem.to_param, :format => "xml"
+        end
+        
+        should_assign_to(:rubygem) { @rubygem }
+        should_respond_with :success
+        should "return a xml hash" do
+          assert_not_nil Crack::XML.parse(@response.body)
+        end
+      end
+      
+      context "in YAML format" do
+        setup do
+          get :show, :id => @rubygem.to_param, :format => "yaml"
+        end
+        
+        should_assign_to(:rubygem) { @rubygem }
+        should_respond_with :success
+        should "return a yaml hash" do
+          assert_not_nil YAML.parse(@response.body)
+        end
       end
     end
 
@@ -56,24 +86,69 @@ class RubygemsControllerTest < ActionController::TestCase
       setup do
         @rubygem = Factory(:rubygem)
         assert 0, @rubygem.versions.count
-        get :show, :id => @rubygem.to_param, :format => "json"
       end
 
-      should_assign_to(:rubygem) { @rubygem }
-      should_respond_with :not_found
+      context "in JSON format" do
+        setup do
+          get :show, :id => @rubygem.to_param, :format => "json"
+        end
+        should_assign_to(:rubygem) { @rubygem }
+        should_respond_with :not_found
+      end
+      
+      context "in XML format" do
+        setup do
+          get :show, :id => @rubygem.to_param, :format => "xml"
+        end
+        should_assign_to(:rubygem) { @rubygem }
+        should_respond_with :not_found
+      end
+      
+      context "in YAML format" do
+        setup do
+          get :show, :id => @rubygem.to_param, :format => "yaml"
+        end
+        should_assign_to(:rubygem) { @rubygem }
+        should_respond_with :not_found
+      end
     end
 
     context "On GET to show for a gem that doesn't exist" do
       setup do
         @name = Factory.next(:name)
         assert ! Rubygem.exists?(:name => @name)
-        get :show, :id => @name, :format => "json"
+      end
+      
+      context "in JSON format" do
+        setup do
+          get :show, :id => @name, :format => "json"
+        end
+        should_respond_with :not_found
+        should "say the rubygem was not found" do
+          assert_match /not be found/, @response.body
+        end
+      end
+      
+      context "in XML format" do
+        setup do
+          get :show, :id => @name, :format => "xml"
+        end
+        should_respond_with :not_found
+        should "say the rubygem was not found" do
+          assert_match /not be found/, @response.body
+        end
+      end
+      
+      context "in YAML format" do
+        setup do
+          get :show, :id => @name, :format => "yaml"
+        end
+        should_respond_with :not_found
+        should "say the rubygem was not found" do
+          assert_match /not be found/, @response.body
+        end
       end
 
-      should_respond_with :not_found
-      should "say the rubygem was not found" do
-        assert_match /not be found/, @response.body
-      end
     end
 
     context "On GET to show for this user's gem" do
@@ -198,7 +273,7 @@ class RubygemsControllerTest < ActionController::TestCase
     should_respond_with :redirect
     should_redirect_to('the homepage') { root_url }
   end
-
+  
   context "On PUT to update without being signed in" do
     setup do
       @rubygem = Factory(:rubygem)
@@ -207,7 +282,7 @@ class RubygemsControllerTest < ActionController::TestCase
     should_respond_with :redirect
     should_redirect_to('the homepage') { root_url }
   end
-
+  
   context "On GET to index with no parameters" do
     setup do
       @gems = (1..3).map do |n|
@@ -218,7 +293,7 @@ class RubygemsControllerTest < ActionController::TestCase
       Factory(:rubygem, :name => "zeta")
       get :index
     end
-
+  
     should_respond_with :success
     should_render_template :index
     should_assign_to(:gems) { @gems }
@@ -232,13 +307,13 @@ class RubygemsControllerTest < ActionController::TestCase
       assert_contain "starting with A"
     end
   end
-
+  
   context "On GET to index as an atom feed" do
     setup do
       @versions = (1..3).map { |n| Factory(:version, :created_at => n.hours.ago) }
       get :index, :format => "atom"
     end
-
+  
     should_respond_with :success
     should_assign_to(:versions) { @versions }
     should "render posts with titles and links" do
@@ -248,7 +323,7 @@ class RubygemsControllerTest < ActionController::TestCase
       end
     end
   end
-
+  
   context "On GET to index with a letter" do
     setup do
       @gems = (1..3).map { |n| Factory(:rubygem, :name => "agem#{n}") }
@@ -267,14 +342,14 @@ class RubygemsControllerTest < ActionController::TestCase
       assert_contain "starting with Z"
     end
   end
-
+  
   context "On GET to show" do
     setup do
       @latest_version = Factory(:version)
       @rubygem = @latest_version.rubygem
       get :show, :id => @rubygem.to_param
     end
-
+  
     should_respond_with :success
     should_render_template :show
     should_assign_to :rubygem
@@ -285,7 +360,7 @@ class RubygemsControllerTest < ActionController::TestCase
       assert_contain @latest_version.built_at.to_date.to_formatted_s(:long)
     end
   end
-
+  
   context "On GET to show with a gem that has multiple versions" do
     setup do
       @rubygem = Factory(:rubygem)
@@ -293,7 +368,7 @@ class RubygemsControllerTest < ActionController::TestCase
       @latest_version = Factory(:version, :number => "2.0.0", :rubygem => @rubygem)
       get :show, :id => @rubygem.to_param
     end
-
+  
     should_respond_with :success
     should_render_template :show
     should_assign_to :rubygem
@@ -301,13 +376,13 @@ class RubygemsControllerTest < ActionController::TestCase
       assert_contain @rubygem.name
       assert_contain @latest_version.number
       assert_contain @latest_version.built_at.to_date.to_formatted_s(:long)
-
+      
       assert_contain "Versions"
       assert_contain @rubygem.versions.last.number
       assert_contain @rubygem.versions.last.built_at.to_date.to_formatted_s(:long)
     end
   end
-
+  
   context "On GET to show for a gem with no versions" do
     setup do
       @rubygem = Factory(:rubygem)
@@ -320,17 +395,17 @@ class RubygemsControllerTest < ActionController::TestCase
       assert_contain "This gem is not currently hosted on Gemcutter."
     end
   end
-
+  
   context "On GET to show for a gem with both runtime and development dependencies" do
     setup do
       @version = Factory(:version)
-
+  
       @development = Factory(:development_dependency, :version => @version)
       @runtime     = Factory(:runtime_dependency,     :version => @version)
-
+  
       get :show, :id => @version.rubygem.to_param
     end
-
+  
     should_respond_with :success
     should_render_template :show
     should_assign_to(:latest_version) { @version }
@@ -339,13 +414,13 @@ class RubygemsControllerTest < ActionController::TestCase
       assert_contain @development.rubygem.name
     end
   end
-
+  
   context "with a confirmed user authenticated" do
     setup do
       @user = Factory(:email_confirmed_user)
       @request.env["HTTP_AUTHORIZATION"] = @user.api_key
     end
-
+  
     context "On POST to create for new gem" do
       setup do
         @request.env["RAW_POST_DATA"] = gem_file.read
@@ -359,7 +434,7 @@ class RubygemsControllerTest < ActionController::TestCase
         assert_equal "Successfully registered gem: test (0.0.0)", @response.body
       end
     end
-
+  
     context "On POST to create for existing gem" do
       setup do
         rubygem = Factory(:rubygem, :name => "test")
@@ -377,7 +452,7 @@ class RubygemsControllerTest < ActionController::TestCase
         assert_equal "Successfully registered gem: test (1.0.0)", @response.body
       end
     end
-
+  
     context "On POST to create with bad gem" do
       setup do
         @request.env["RAW_POST_DATA"] = "really bad gem"
@@ -389,13 +464,13 @@ class RubygemsControllerTest < ActionController::TestCase
         assert_match /Gemcutter cannot process this gem/, @response.body
       end
     end
-
+  
     context "On POST to create for someone else's gem" do
       setup do
         @other_user = Factory(:email_confirmed_user)
         create_gem(@other_user, :name => "test")
         @rubygem.reload
-
+  
         @request.env["RAW_POST_DATA"] = gem_file("test-1.0.0.gem").read
         post :create
       end

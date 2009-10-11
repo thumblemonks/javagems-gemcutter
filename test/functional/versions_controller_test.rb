@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'crack'
 
 class VersionsControllerTest < ActionController::TestCase
 
@@ -22,6 +23,26 @@ class VersionsControllerTest < ActionController::TestCase
         assert_contain version.number
       end
     end
+    
+    context "in JSON format" do
+      setup do
+        get :index, :rubygem_id => @rubygem.name, :format => "json"
+      end
+      should_respond_with :success
+      should "return a json hash" do
+        assert_not_nil JSON.parse(@response.body)
+      end
+    end
+    
+    context "in XML format" do
+      setup do
+        get :index, :rubygem_id => @rubygem.name, :format => "xml"
+      end
+      should_respond_with :success
+      should "return a xml hash" do
+        assert_not_nil Crack::XML.parse(@response.body)
+      end
+    end
   end
 
   context "On GET to show" do
@@ -39,6 +60,40 @@ class VersionsControllerTest < ActionController::TestCase
       assert_contain @rubygem.name
       assert_contain @latest_version.number
       assert_contain @latest_version.built_at.to_date.to_formatted_s(:long)
+    end
+    
+    context "in JSON format" do
+      setup do
+        @current_version = Factory(:version)
+        @rubygem = @current_version.rubygem
+        get :show, :rubygem_id => @rubygem.name, :id => @current_version.number, :format => "json"
+      end
+      should "return a json hash" do
+        assert_not_nil JSON.parse(@response.body)
+      end
+    end
+    
+    context "in XML format" do
+      setup do
+        @current_version = Factory(:version)
+        @rubygem = @current_version.rubygem
+        get :show, :rubygem_id => @rubygem.name, :id => @current_version.number, :format => "xml"
+      end
+      should "return a xml hash" do
+        assert_not_nil Crack::XML.parse(@response.body)
+      end
+    end
+    
+    context "in YAML format" do
+      setup do
+        @current_version = Factory(:version)
+        @rubygem = @current_version.rubygem
+        get :show, :rubygem_id => @rubygem.name, :id => @current_version.number, :format => "yaml"
+      end
+      should_respond_with :success
+      should "return a yaml hash" do
+        assert_not_nil YAML.parse(@response.body)
+      end
     end
   end
 

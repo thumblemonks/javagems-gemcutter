@@ -26,11 +26,13 @@ ActionController::Routing::Routes.draw do |map|
     :controller   => "rubygems",
     :action       => "show",
     :format       => "yaml",
+    :method       => :get,
     :requirements => { :id => RUBYGEM_NAME_MATCHER }   
   map.yaml_gem_version "/gems/:rubygem_id/versions/:id.yaml",
     :controller   => "versions",
     :action       => "show",
     :format       => "yaml",
+    :method       => :get,
     :requirements => { :id => RUBYGEM_NAME_MATCHER }
 
   map.resource  :dashboard,  :only => :show
