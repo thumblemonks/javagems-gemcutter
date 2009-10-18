@@ -62,9 +62,9 @@ class Version < ActiveRecord::Base
     "#{rubygem.name} (#{to_s})"
   end
   
-  def to_yaml
-    public_api_info.to_yaml
-  end
+  #def to_yaml
+  #  public_api_info.to_yaml
+  #end
 
   def to_slug
     param = number.dup

@@ -1,21 +1,21 @@
 class Rubygem < ActiveRecord::Base
   include Pacecar
 
-  has_many :owners, :through => :ownerships, :source => :user
-  has_many :ownerships, :dependent => :destroy
+  has_many :owners,      :through => :ownerships, :source => :user
+  has_many :ownerships,  :dependent => :destroy
   has_many :subscribers, :through => :subscriptions, :source => :user
   has_many :subscriptions
-  has_many :versions, :dependent => :destroy do
+  has_many :versions,    :dependent => :destroy do
     def latest
       self.find(:first)
     end
   end
   has_one :linkset, :dependent => :destroy
 
-  validates_presence_of :name
+  validates_presence_of   :name
   validates_uniqueness_of :name
 
-  named_scope :with_versions, :conditions => ["versions_count > 0"]
+  named_scope :with_versions,    :conditions => ["versions_count > 0"]
   named_scope :with_one_version, :conditions => ["versions_count = 1"]
 
   named_scope :search, lambda { |query| {
@@ -26,8 +26,7 @@ class Rubygem < ActiveRecord::Base
   }
   
   serialize_with_options do 
-    only :name, :downloads, :rubyforge_project
-    methods :version, :authors, :info
+    methods :version, :authors, :info, :name, :downloads, :rubyforge_project
   end
 
   def validate
@@ -74,9 +73,9 @@ class Rubygem < ActiveRecord::Base
     name
   end
   
-  def to_yaml
-    public_api_info.to_yaml
-  end
+  #def to_yaml
+  #  public_api_info.to_yaml
+  #end
 
   def with_downloads
     "#{name} (#{downloads})"
@@ -117,15 +116,15 @@ class Rubygem < ActiveRecord::Base
   end
   
   def version
-    versions.current.number
+    versions.latest.number
   end
   
   def authors
-    versions.current.authors
+    versions.latest.authors
   end
   
   def info
-    versions.current.info
+    versions.latest.info
   end
 
   def reorder_versions
@@ -147,10 +146,9 @@ class Rubygem < ActiveRecord::Base
   def public_api_info
     {:name              => name,
      :downloads         => downloads,
-     :version           => versions.current.number,
-     :authors           => versions.current.authors,
-     :info              => versions.current.info,
+     :version           => versions.latest.number,
+     :authors           => versions.latest.authors,
+     :info              => versions.latest.info,
      :rubyforge_project => rubyforge_project }
   end
-
 end
