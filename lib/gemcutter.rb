@@ -13,7 +13,7 @@ class Gemcutter
   end
 
   def process
-    pull_spec && find && authorize && save
+    pull_spec && find && authorize && extract_readme && save
   end
 
   def authorize
@@ -54,14 +54,27 @@ class Gemcutter
     false
   end
 
+  def format
+    @format ||= Gem::Format.from_io(self.body)
+  end
+
   def pull_spec
     begin
-      format = Gem::Format.from_io(self.body)
       @spec = format.spec
     rescue Exception => e
       notify("Gemcutter cannot process this gem.\n" + 
              "Please try rebuilding it and installing it locally to make sure it's valid.\n" +
              "Error:\n#{e.message}\n#{e.backtrace.join("\n")}", 422)
+    end
+  end
+
+  def extract_readme
+    files = format.file_entries.inject({}) do |hash, (attributes, data)|
+      hash.update(attributes['path'] => data)
+    end
+
+    if readme = files.keys.sort.detect { |filename| filename =~ /^README/ }
+      rubygem.readme = GitHub::Markup.render(readme, files[readme])
     end
   end
 
