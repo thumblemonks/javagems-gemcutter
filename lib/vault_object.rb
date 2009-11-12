@@ -3,5 +3,5 @@ AWS::S3::Base.establish_connection!(
 )
 
 class ::VaultObject < AWS::S3::S3Object
-  set_current_bucket_to "gemcutter_#{(ENV['RACK_ENV'] || RAILS_ENV).downcase}"
+  set_current_bucket_to "javagems_#{(ENV['RACK_ENV'] || RAILS_ENV).downcase}"
 end
