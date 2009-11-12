@@ -1,6 +1,5 @@
 AWS::S3::Base.establish_connection!(
-  :access_key_id     => ENV['S3_KEY'],
-  :secret_access_key => ENV['S3_SECRET']
+  YAML.load_file(Rails.root + "config/aws-s3.yml")
 )
 
 class ::VaultObject < AWS::S3::S3Object
