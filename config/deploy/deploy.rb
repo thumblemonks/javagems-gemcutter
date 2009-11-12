@@ -19,14 +19,19 @@ set :rails_env,             stage
 namespace :vlad do
 
   remote_task :symlink_configs, :roles => :app do
-     run "ln -fs #{shared_path}/config/database.yml #{latest_release}/config/database.yml"
-     run "ln -fs #{shared_path}/config/aws-s3.yml #{latest_release}/config/aws-s3.yml"
+    %w[database.yml aws-s3.yml mailer.yml session.yml].each do |conf_file|
+      run "ln -fs #{shared_path}/config/#{conf_file} #{latest_release}/config/#{conf_file}"
+    end
   end
 
   remote_task :restart, :roles => :app do
     puts "Restarting the app..."
     run("touch #{current_path}/tmp/restart.txt")
   end
+  
+  remote_task :bundle_gems, :roles => :app do
+    run(%Q[cd "#{current_path}" && gem bundle])
+  end
 
-  task :deploy => [:update, :symlink_configs, :migrate, :restart]
+  task :deploy => [:update, :symlink_configs, :bundle_gems, :migrate, :restart]
 end
