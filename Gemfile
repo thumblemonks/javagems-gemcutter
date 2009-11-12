@@ -7,6 +7,7 @@ source "http://gems.github.com"
 gem "rails", "2.3.4"
 gem "rack",  "1.0.1"
 
+gem "gabrielg-vlad"
 gem "clearance",       "0.8.2"
 gem "will_paginate",   "2.3.11"
 gem "sinatra",         "0.9.4"
