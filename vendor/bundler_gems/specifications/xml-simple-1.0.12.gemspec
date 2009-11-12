@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
   s.date = %q{2009-02-26}
   s.email = %q{contact@maik-schmidt.de}
   s.files = ["lib/xmlsimple.rb"]
+  s.has_rdoc = false
   s.homepage = %q{http://xml-simple.rubyforge.org}
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{xml-simple}

@@ -8,7 +8,7 @@ Rails::Initializer.run do |config|
   config.frameworks -= [:active_resource]
 end
 
-DO_NOT_REPLY = "donotreply@gemcutter.org"
+DO_NOT_REPLY = "donotreply@javagems.org"
 
 require 'lib/rubygems/format'
 require 'lib/rubygems/indexer'

@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jamis Buck", "Delano Mandelbaum"]
-  s.date = %q{2009-09-03}
+  s.date = %q{2009-09-02}
   s.description = %q{Net::SSH: a pure-Ruby implementation of the SSH2 client protocol.}
   s.email = ["net-ssh@solutious.com", "net-ssh@solutious.com"]
   s.extra_rdoc_files = ["README.rdoc", "THANKS.rdoc", "CHANGELOG.rdoc"]
