@@ -1,24 +1,22 @@
-h1. gemcutter
+h1. javagems-gemcutter
 
-Awesome RubyGem hosting.
+Awesome JVM code hosting.
 
 h2. Purpose
 
-* Provide a better API for dealing with gems
-* Create more transparent and accessible project pages
+* Provide a simpler way to fetch and publish code than Maven
 * Enable the community to improve and enhance the site
 
 h2. Links
 
-"Mailing List":http://groups.google.com/group/gemcutter
-"FAQ":http://gemcutter.org/pages/faq
-IRC: #gemcutter on irc.freenode.net
+"FAQ":http://javagems.org/pages/faq
+IRC: #javagems on irc.freenode.net
 
 h2. Contributions
 
-Gemcutter has a 'commit-bit' policy, much like the Rubinius project. Submit a patch that is accepted, and you can get full commit access to the project. All you have to do is ask us on #gemcutter on Freenode or bug qrush in a message and he'll add you as a collaborator on the main repository. Feel free to fork the project though and have fun in your own sandbox.
+Gemcutter has a 'commit-bit' policy, much like the Rubinius project. So we do too. Submit a patch that is accepted, and you can get full commit access to the project. All you have to do is ask us on #javagems on Freenode or bug gabrielg or jaknowlden in a message and they'll add you as a collaborator on the main repository. Feel free to fork the project though and have fun in your own sandbox.
 
-Please read up on the "GitHub Wiki":http://wiki.github.com/qrush/gemcutter/contribution-guidelines for the latest contribution guidelines.
+Please read up on the "GitHub Wiki":http://wiki.github.com/thumblemonks/javagems-gemcutter/contribution-guidelines for the latest contribution guidelines.
 
 h2. Organization
 
