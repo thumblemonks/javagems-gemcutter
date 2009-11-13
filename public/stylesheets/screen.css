@@ -776,6 +776,13 @@ body {
   margin-top: -15px;
 }
 
+.footer .links #thumblemonks {
+  float: right;
+  font-size: 0.9em;
+  text-align: right;
+  margin-top: -25px;
+}
+
 .footer .links #thoughtbot {
   float: right;
   font-size: 0.9em;
@@ -792,6 +799,7 @@ body {
   margin-bottom: 20px;
 }
 
+.footer .links #thumblemonks img,
 .footer .links #thoughtbot img,
 .footer .links #linode img {
   padding-top: 5px;
