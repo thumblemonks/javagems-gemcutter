@@ -9,7 +9,7 @@ set :application,           'gemcutter'
 set :ssh_flags,             "-l#{application}"
 set :deploy_to,             "/var/app/#{application}"
 
-set :repository,            "git://github.com/javagems/gemcutter.git"
+set :repository,            "git://github.com/thumblemonks/javagems-gemcutter.git"
 set :revision,              ENV['REV'] || "origin/master"
 set :git_use_submodules,    true
 
