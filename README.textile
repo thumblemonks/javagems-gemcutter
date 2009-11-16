@@ -30,3 +30,9 @@ Gemcutter consists of a few major parts:
 h2. License
 
 Gemcutter uses the MIT license. Please check the LICENSE file for more details.
+
+h2. TODO
+
+# Finish re-branding site
+# Add Disqus to gem pages
+# Add Hoptoad
