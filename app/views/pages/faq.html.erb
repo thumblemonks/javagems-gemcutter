@@ -13,7 +13,7 @@
 
 <p>
   <b>Do I need Ruby installed to use this?</b><br />
-  That's an interesting question. You don't need Ruby installed, technically - there's a standalone JAR available at <%= link_to 'the GitHub downloads page for JavaGems', 'http://github.com/thumblemonks/javagems/downloads' %>. However, that standalone JAR consists of JRuby plus the JavaGems gem and the required dependencies. If you install <%= link_to 'Ruby', "http://ruby-lang.org/" %> or JRuby (<code>javagem install jruby</code>) your life will probably be much brighter anyway. 
+  Yes. For a brief moment in time, we had a standalone JAR version of JavaGems. It was kind of a pain in the ass to build and maintain though, due to things like JRuby shipping with crippled OpenSSL support because of inane US cryptography export restrictions. If you'd like to have a standalone JAR version, feel free to fork the repo and contribute one. Until then, you'll need to install either <%= link_to 'Ruby', "http://ruby-lang.org/" %>, <%= link_to 'Ruby Enterprise Edition', "http://www.rubyenterpriseedition.com/" %>, or <%= link_to "JRuby", "http://jruby.org/" %> to make use of JavaGems.
 </p>
 
 <p>
