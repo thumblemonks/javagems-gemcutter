@@ -141,7 +141,7 @@ class Version < ActiveRecord::Base
   end
 
   def to_install
-    command = "gem install #{rubygem.name}"
+    command = "javagem install #{rubygem.name}"
     command << " -v #{number}" if rubygem.versions.latest != self
     command << " --pre" if prerelease
     command
