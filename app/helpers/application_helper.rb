@@ -6,11 +6,11 @@ module ApplicationHelper
   end
 
   def title
-    "gemcutter"
+    "javagems"
   end
 
   def subtitle
-    "awesome gem hosting"
+    "awesome jvm gem hosting"
   end
 
   def page_title
