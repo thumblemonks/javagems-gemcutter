@@ -14,7 +14,7 @@ Publish your gems to the world with one command. All that's required is your ver
 Enter your Gemcutter credentials. Don't have an account yet? Create one at http://gemcutter.org/sign_up
 Email:   nick@quaran.to
 Password:
-Signed in. Your api key has been stored in ~/.gemrc
+Signed in. Your api key has been stored in ~/.javagemrc
 Pushing gem to Gemcutter...
 Successfully registered gem: gemcutter (0.1.3)</code></pre>
 </p>
@@ -22,17 +22,17 @@ Successfully registered gem: gemcutter (0.1.3)</code></pre>
 <h4 id="owner">javagem owner</h4>
 <p>
 This command is used to give access to other users to push gems. They will also be able to edit the links through JavaGem's web interface. You'll need to know the user's email address and they'll need a confirmed account.
-<pre><code>$ gem owner gemcutter
+<pre><code>$ javagem owner gemcutter
 Owners for gem: gemcutter
 - josh@technicalpickles.com
 - nick@quaran.to
 
-$ gem owner gemcutter --remove josh@technicalpickles.com
+$ javagem owner gemcutter --remove josh@technicalpickles.com
 Removed owner: josh@technicalpickles.com
 Owners for gem: gemcutter
 - nick@quaran.to
 
-$ gem owner gemcutter --add josh@technicalpickles.com
+$ javagem owner gemcutter --add josh@technicalpickles.com
 Added owner: josh@technicalpickles.com
 Owners for gem: gemcutter
 - josh@technicalpickles.com
