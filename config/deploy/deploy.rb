@@ -19,7 +19,7 @@ set :rails_env,             stage
 namespace :vlad do
 
   remote_task :symlink_configs, :roles => :app do
-    %w[database.yml aws-s3.yml mailer.yml session.yml].each do |conf_file|
+    %w[database.yml aws-s3.yml mailer.yml session.yml hoptoad.yml].each do |conf_file|
       run "ln -fs #{shared_path}/config/#{conf_file} #{latest_release}/config/#{conf_file}"
     end
   end
