@@ -68,9 +68,7 @@
 
       <%= render :partial => "rubygems/dependencies", :locals => { :dependencies => @latest_version.dependencies.runtime } %>
       <%= render :partial => "rubygems/dependencies", :locals => { :dependencies => @latest_version.dependencies.development } %>
-      <br />
-      <br />
-      <div id="disqus_thread"></div><script type="text/javascript" src="http://disqus.com/forums/javagems/embed.js"></script><noscript><a href="http://disqus.com/forums/javagems/?url=ref">View the discussion thread.</a></noscript><a href="http://disqus.com" class="dsq-brlink">javagems comments powered by <span class="logo-disqus">Disqus</span></a>
+      <div style="margin-top: 25px;" id="disqus_thread"></div><script type="text/javascript" src="http://disqus.com/forums/javagems/embed.js"></script><noscript><a href="http://disqus.com/forums/javagems/?url=ref">View the discussion thread.</a></noscript><a href="http://disqus.com" class="dsq-brlink">javagems comments powered by <span class="logo-disqus">Disqus</span></a>
     </div>
   </div>
 <% end %>
