@@ -12,6 +12,7 @@ config/database.yml
 config/aws-s3.yml
 config/mailer.yml
 config/session.yml
+config/hoptoad.yml
 *.sql
 _site/
 vendor/bundler_gems/
