@@ -7,6 +7,11 @@
 </p>
 
 <p>
+  <b>Why build on top of RubyGems?</b><br />
+  No real reason. I like RubyGems. I like Gemcutter. I didn't want to deal with Maven, and there's already a big ecosystem around RubyGems, with things like Bundler and so forth. Maybe one day JavaGems will essentially be a clean Java/Scala/Clojure implementation of RubyGems, but right now, just using the tools available gave us a pretty decent headstart. No need to worry about dependency resolution (Bundler solves that), vendoring things (Bundler solves that), publishing code (Gemcutter solves that), etcetera. This is one big experiment.
+</p>
+
+<p>
   <b>Where do you get off trashing Maven?</b><br />
   Maven is fine. It's an incredibly powerful tool with a lot more features than JavaGems will probably ever have. If Maven is working for you, keep using Maven. The problem is, some of us have smaller needs and don't need all the power of Maven, but rather, need something more simple. JavaGems aims to fill that gap. It's not trying to replace Maven, but rather, complement it.  
 </p>
